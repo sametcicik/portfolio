@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Samet | Long Form Portfolio</title>
+    <meta name="description" content="Long form video editing portfolio by Samet. Cinematic, high-quality YouTube videos and documentaries.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .video-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .video-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 30px var(--primary-glow);
+        }
+
+        .video-card img {
+            width: 100%;
+            height: 210px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .video-card-label {
+            padding: 1rem 1.2rem;
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .page-hero {
+            min-height: 40vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding-top: 10rem;
+            padding-bottom: 2rem;
+            background: linear-gradient(to bottom, rgba(5,5,5,0.7), rgba(5,5,5,0.95)), url('bg.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .page-hero h1 {
+            font-size: 3.5rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-hero p {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            transition: var(--transition);
+        }
+
+        .back-btn:hover {
+            color: var(--primary-color);
+        }
+
+        /* --- Video Modal --- */
+        .video-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-modal-overlay.active {
+            display: flex;
+        }
+
+        .video-modal-box {
+            position: relative;
+            width: 90%;
+            max-width: 960px;
+            aspect-ratio: 16 / 9;
+            background: #000;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 0 60px rgba(239, 255, 0, 0.2);
+        }
+
+        .video-modal-box iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: -3rem;
+            right: 0;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: color 0.3s;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            color: var(--primary-color);
+        }
+
+        /* Loading spinner */
+        .modal-spinner {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+            z-index: 2;
+            transition: opacity 0.4s;
+        }
+        .modal-spinner.hidden { opacity: 0; pointer-events: none; }
+        .spinner-ring {
+            width: 48px;
+            height: 48px;
+            border: 4px solid rgba(255,255,255,0.1);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Play button on hoverable cards */
+        .video-card.has-video {
+            position: relative;
+        }
+
+        .video-card.has-video::after {
+            content: '\25B6';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -60%);
+            width: 56px;
+            height: 56px;
+            background: var(--primary-color);
+            color: #000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            line-height: 56px;
+            text-align: center;
+        }
+
+        .video-card.has-video:hover::after {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-capsule">
+            <a href="index.html" class="nav-logo"><img src="logoyazi.png" alt="SAMET."></a>
+            <ul class="nav-links">
+                <li><a href="short.html" id="nav-short-form">Short Form</a></li>
+                <li><a href="long.html" id="nav-long-form" style="color: var(--primary-color);">Long Form</a></li>
+                <li><a href="index.html#testimonials">Testimonials</a></li>
+            </ul>
+            <a href="https://www.upwork.com/freelancers/~013fd8ff4d81ea046d" target="_blank" class="nav-cta">UPWORK</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="page-hero">
+            <div class="hero-glow"></div>
+            <div class="container">
+                <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Home</a>
+                <h1 data-reveal>Long Form</h1>
+                <p data-reveal>Cinematic, high-retention long form content — YouTube videos & Documentaries</p>
+            </div>
+        </section>
+
+        <section class="container" style="padding-top: 4rem; padding-bottom: 8rem;">
+            <div class="video-grid">
+                <div class="video-card has-video" data-reveal data-video="https://drive.google.com/file/d/1Tjc7NT4W5khFW8EfRUUMMhBq6SJmTXC6/preview" id="long-card-1">
+                    <img src="masaustuthumbnails/long1.jpeg" alt="Long Form Video 1">
+                    <div class="video-card-label">Long Form · Edit 01 <span style="color: var(--primary-color); font-size:0.75rem;">▶ Watch</span></div>
+                </div>
+                <div class="video-card has-video" data-reveal data-video="https://drive.google.com/file/d/1eMb01-_hkDp7aQ8QnzcCANhfx1haQ7sX/preview" id="long-card-2">
+                    <img src="masaustuthumbnails/long2.jpeg" alt="Long Form Video 2">
+                    <div class="video-card-label">Long Form · Edit 02 <span style="color: var(--primary-color); font-size:0.75rem;">▶ Watch</span></div>
+                </div>
+                <div class="video-card has-video" data-reveal data-video="https://drive.google.com/file/d/1bEpnuQfVlYUt3nbKC0R5adxfE195s6iW/preview" id="long-card-3">
+                    <img src="masaustuthumbnails/long3.jpeg" alt="Long Form Video 3">
+                    <div class="video-card-label">Long Form · Edit 03 <span style="color: var(--primary-color); font-size:0.75rem;">▶ Watch</span></div>
+                </div>
+                <div class="video-card has-video" data-reveal data-video="https://drive.google.com/file/d/1ZqNj5CbLX060rBmlq0EluKaUxuDuh7xh/preview" id="long-card-4">
+                    <img src="masaustuthumbnails/long4.jpeg" alt="Long Form Video 4">
+                    <div class="video-card-label">Long Form · Edit 04 <span style="color: var(--primary-color); font-size:0.75rem;">▶ Watch</span></div>
+                </div>
+                <div class="video-card has-video" data-reveal data-video="https://drive.google.com/file/d/1w-ex7jPIxdMLJ-oTojlmzaFF6aS44EH9/preview" id="long-card-5">
+                    <img src="masaustuthumbnails/long5.jpeg" alt="Long Form Video 5">
+                    <div class="video-card-label">Long Form · Edit 05 <span style="color: var(--primary-color); font-size:0.75rem;">▶ Watch</span></div>
+                </div>
+                <div class="video-card has-video" data-reveal data-video="https://drive.google.com/file/d/1KpNzNfZsB7GmV_bEkUF0DDs1pWs6axqi/preview" id="long-card-6">
+                    <img src="masaustuthumbnails/long6.jpeg" alt="Long Form Video 6">
+                    <div class="video-card-label">Long Form · Edit 06 <span style="color: var(--primary-color); font-size:0.75rem;">▶ Watch</span></div>
+                </div>
+                <div class="video-card has-video" data-reveal data-video="https://drive.google.com/file/d/1iIuv5pJCbBzIcQk6oQ4sbMhtStUSs07k/preview" id="long-card-7">
+                    <img src="masaustuthumbnails/long7.jpeg" alt="Long Form Video 7">
+                    <div class="video-card-label">Long Form · Edit 07 <span style="color: var(--primary-color); font-size:0.75rem;">▶ Watch</span></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <a href="index.html" class="nav-logo" style="display: inline-block; margin-bottom: 2rem;"><img src="logoyazi.png" alt="SAMET."></a>
+            <div class="footer-socials">
+                <a href="https://www.upwork.com/freelancers/~013fd8ff4d81ea046d" class="upwork-footer-link" target="_blank" title="Upwork Profile">
+                    <img src="upwork-icon.png" alt="Upwork" style="height: 30px; width: auto;">
+                </a>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 Samet CİCİK. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Video Modal -->
+    <div class="video-modal-overlay" id="videoModal">
+        <div class="video-modal-box">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div class="modal-spinner" id="modalSpinner"><div class="spinner-ring"></div></div>
+            <iframe id="modalIframe" src="" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Modal logic
+        const modal = document.getElementById('videoModal');
+        const iframe = document.getElementById('modalIframe');
+        const closeBtn = document.getElementById('modalClose');
+
+        document.querySelectorAll('.video-card.has-video').forEach(card => {
+            card.addEventListener('click', () => {
+                const src = card.dataset.video;
+                const type = card.dataset.type;
+                if (type === 'youtube') {
+                    window.open(src, '_blank');
+                } else {
+                    document.getElementById('modalSpinner').classList.remove('hidden');
+                    iframe.src = src;
+                    modal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+            });
+        });
+
+        iframe.addEventListener('load', () => {
+            document.getElementById('modalSpinner').classList.add('hidden');
+        });
+
+        function closeModal() {
+            modal.classList.remove('active');
+            iframe.src = '';
+            document.body.style.overflow = '';
+        }
+
+        closeBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+    </script>
+</body>
+</html>

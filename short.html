@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Samet | Short Form Portfolio</title>
+    <meta name="description" content="Short form video editing portfolio by Samet. Fast-paced social content, reels, and shorts.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+            margin-top: 3rem;
+        }
+
+        .video-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
+            overflow: hidden;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .video-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 30px var(--primary-glow);
+        }
+
+        .video-card img {
+            width: 100%;
+            aspect-ratio: 9 / 16;
+            object-fit: cover;
+            display: block;
+        }
+
+        .video-card-label {
+            padding: 1rem 1.2rem;
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .page-hero {
+            min-height: 40vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding-top: 10rem;
+            padding-bottom: 2rem;
+            background: linear-gradient(to bottom, rgba(5,5,5,0.7), rgba(5,5,5,0.95)), url('bg.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .page-hero h1 {
+            font-size: 3.5rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-hero p {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            transition: var(--transition);
+        }
+
+        .back-btn:hover {
+            color: var(--primary-color);
+        }
+
+        /* --- Video Modal --- */
+        .video-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+        .video-modal-overlay.active { display: flex; }
+
+        .video-modal-box {
+            position: relative;
+            width: min(90vw, 420px);
+            aspect-ratio: 9 / 16;
+            background: #000;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 0 60px rgba(239, 255, 0, 0.2);
+        }
+
+        .video-modal-box iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: -3rem;
+            right: 0;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .modal-close:hover { color: var(--primary-color); }
+
+        /* Loading spinner */
+        .modal-spinner {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+            z-index: 2;
+            transition: opacity 0.4s;
+        }
+        .modal-spinner.hidden { opacity: 0; pointer-events: none; }
+        .spinner-ring {
+            width: 48px;
+            height: 48px;
+            border: 4px solid rgba(255,255,255,0.1);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .video-card.has-video { position: relative; }
+        .video-card.has-video::after {
+            content: '\25B6';
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 48px;
+            height: 48px;
+            background: var(--primary-color);
+            color: #000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            line-height: 48px;
+            text-align: center;
+        }
+        .video-card.has-video:hover::after { opacity: 1; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-capsule">
+            <a href="index.html" class="nav-logo"><img src="logoyazi.png" alt="SAMET."></a>
+            <ul class="nav-links">
+                <li><a href="short.html" id="nav-short-form" style="color: var(--primary-color);">Short Form</a></li>
+                <li><a href="long.html" id="nav-long-form">Long Form</a></li>
+                <li><a href="index.html#testimonials">Testimonials</a></li>
+            </ul>
+            <a href="https://www.upwork.com/freelancers/~013fd8ff4d81ea046d" target="_blank" class="nav-cta">UPWORK</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="page-hero">
+            <div class="hero-glow"></div>
+            <div class="container">
+                <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Home</a>
+                <h1 data-reveal>Short Form</h1>
+                <p data-reveal>Fast-paced, high-retention short form content — Reels, Shorts & TikToks</p>
+            </div>
+        </section>
+
+        <section class="container" style="padding-top: 4rem; padding-bottom: 8rem;">
+            <div class="video-grid">
+                <div class="video-card has-video" data-reveal data-video="https://drive.google.com/file/d/1pLYnU-48lgS7MubawIM9WOuxQb_FsLpN/preview" id="short-card-1">
+                    <img src="masaustuthumbnails/short1.jpeg" alt="Short Form Video 1">
+                    <div class="video-card-label">Short · 01 <span style="color:var(--primary-color);font-size:0.7rem;">▶</span></div>
+                </div>
+                <div class="video-card has-video" data-reveal data-video="https://drive.google.com/file/d/16PVuagBGRb07bCfn6GfG9NDa9VwGQ0T-/preview" id="short-card-2">
+                    <img src="masaustuthumbnails/short2.jpeg" alt="Short Form Video 2">
+                    <div class="video-card-label">Short · 02 <span style="color:var(--primary-color);font-size:0.7rem;">▶</span></div>
+                </div>
+                <div class="video-card has-video" data-reveal data-video="https://drive.google.com/file/d/1gQhf6TziWMQGUVxLNokQzGVWVvqxJPCU/preview" id="short-card-3">
+                    <img src="masaustuthumbnails/short3.jpeg" alt="Short Form Video 3">
+                    <div class="video-card-label">Short · 03 <span style="color:var(--primary-color);font-size:0.7rem;">▶</span></div>
+                </div>
+                <div class="video-card has-video" data-reveal data-video="https://drive.google.com/file/d/13JbBYqV5xBHAv5OLa0DoezZqp0hdVPrs/preview" id="short-card-4">
+                    <img src="masaustuthumbnails/short4.jpeg" alt="Short Form Video 4">
+                    <div class="video-card-label">Short · 04 <span style="color:var(--primary-color);font-size:0.7rem;">▶</span></div>
+                </div>
+                <div class="video-card has-video" data-reveal data-video="https://drive.google.com/file/d/1IcDS3fOeV5PBuyQQXUMC4KfEAN057ga2/preview" id="short-card-5">
+                    <img src="masaustuthumbnails/short5.jpeg" alt="Short Form Video 5">
+                    <div class="video-card-label">Short · 05 <span style="color:var(--primary-color);font-size:0.7rem;">▶</span></div>
+                </div>
+                <div class="video-card has-video" data-reveal data-video="https://drive.google.com/file/d/1xN3jT9b_1zgtjNH4SfWdnrkAYwxBiCn5/preview" id="short-card-6">
+                    <img src="masaustuthumbnails/short6.jpeg" alt="Short Form Video 6">
+                    <div class="video-card-label">Short · 06 <span style="color:var(--primary-color);font-size:0.7rem;">▶</span></div>
+                </div>
+                <div class="video-card has-video" data-reveal data-video="https://drive.google.com/file/d/1NGc53b0sTJLndQSJWrIZXb48oE-Cu1FL/preview" id="short-card-7">
+                    <img src="masaustuthumbnails/short7.jpeg" alt="Short Form Video 7">
+                    <div class="video-card-label">Short · 07 <span style="color:var(--primary-color);font-size:0.7rem;">▶</span></div>
+                </div>
+                <div class="video-card has-video" data-reveal data-video="https://drive.google.com/file/d/1SKDHPRA1nUSY_5HJvRk4EiREfOUbl9KZ/preview" id="short-card-8">
+                    <img src="masaustuthumbnails/short8.jpeg" alt="Short Form Video 8">
+                    <div class="video-card-label">Short · 08 <span style="color:var(--primary-color);font-size:0.7rem;">▶</span></div>
+                </div>
+                <div class="video-card has-video" data-reveal data-video="https://drive.google.com/file/d/1QrYodDp-tlUJGlXeiM9ouyy8cH6aM9Kv/preview" id="short-card-9">
+                    <img src="masaustuthumbnails/short9.jpeg" alt="Short Form Video 9">
+                    <div class="video-card-label">Short · 09 <span style="color:var(--primary-color);font-size:0.7rem;">▶</span></div>
+                </div>
+                <div class="video-card has-video" data-reveal data-video="https://drive.google.com/file/d/1P7S4SHacpejZFzdArIVQMQ0upOdGom2O/preview" id="short-card-10">
+                    <img src="masaustuthumbnails/short10.jpeg" alt="Short Form Video 10">
+                    <div class="video-card-label">Short · 10 <span style="color:var(--primary-color);font-size:0.7rem;">▶</span></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <a href="index.html" class="nav-logo" style="display: inline-block; margin-bottom: 2rem;"><img src="logoyazi.png" alt="SAMET."></a>
+            <div class="footer-socials">
+                <a href="https://www.upwork.com/freelancers/~013fd8ff4d81ea046d" class="upwork-footer-link" target="_blank" title="Upwork Profile">
+                    <img src="upwork-icon.png" alt="Upwork" style="height: 30px; width: auto;">
+                </a>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 Samet CİCİK. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Video Modal -->
+    <div class="video-modal-overlay" id="videoModal">
+        <div class="video-modal-box">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div class="modal-spinner" id="modalSpinner"><div class="spinner-ring"></div></div>
+            <iframe id="modalIframe" src="" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        const modal = document.getElementById('videoModal');
+        const iframe = document.getElementById('modalIframe');
+        const closeBtn = document.getElementById('modalClose');
+
+        document.querySelectorAll('.video-card.has-video').forEach(card => {
+            card.addEventListener('click', () => {
+                const spinner = document.getElementById('modalSpinner');
+                spinner.classList.remove('hidden');
+                iframe.src = card.dataset.video;
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        iframe.addEventListener('load', () => {
+            document.getElementById('modalSpinner').classList.add('hidden');
+        });
+
+        function closeModal() {
+            modal.classList.remove('active');
+            iframe.src = '';
+            document.body.style.overflow = '';
+        }
+
+        closeBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+    </script>
+</body>
+</html>
