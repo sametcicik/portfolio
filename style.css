@@ -625,8 +625,8 @@ footer {
 }
 
 .mobile-menu-overlay.active {
-    opacity: 1;
-    pointer-events: auto;
+    opacity: 1 !important;
+    pointer-events: auto !important;
 }
 
 .mobile-nav-links {
