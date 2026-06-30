@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Samet | Premium Video Editing Portfolio</title>
     <meta name="description" content="Professional video editor for top content creators. High conversion, retention-focused editing.">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=1.1">
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -22,7 +22,7 @@
             <a href="https://www.upwork.com/freelancers/~013fd8ff4d81ea046d" target="_blank" class="nav-cta" style="border-radius: 100px; display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.5rem;">
                 <img src="upwork-icon.png" alt="Upwork" style="width: 18px; height: 18px; object-fit: contain;"> Upwork
             </a>
-            <button class="mobile-menu-btn" aria-label="Toggle Menu">
+            <button class="mobile-menu-btn" style="display: none;" aria-label="Toggle Menu">
                 <span class="bar"></span>
                 <span class="bar"></span>
                 <span class="bar"></span>
@@ -31,7 +31,7 @@
     </nav>
 
     <!-- Mobile Menu Overlay -->
-    <div class="mobile-menu-overlay">
+    <div class="mobile-menu-overlay" style="opacity: 0; pointer-events: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh;">
         <ul class="mobile-nav-links">
             <li><a href="short.html">Short Form</a></li>
             <li><a href="long.html">Long Form</a></li>
