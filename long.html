@@ -189,6 +189,19 @@
         .video-card.has-video:hover::after {
             opacity: 1;
         }
+
+        @media (max-width: 768px) {
+            .page-hero h1 {
+                font-size: 2.8rem;
+            }
+            .video-grid {
+                grid-template-columns: 1fr;
+                gap: 1.2rem;
+            }
+            .video-card img {
+                height: 180px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -204,8 +217,23 @@
             <a href="https://www.upwork.com/freelancers/~013fd8ff4d81ea046d" target="_blank" class="nav-cta" style="border-radius: 100px; display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.5rem;">
                 <img src="upwork-icon.png" alt="Upwork" style="width: 18px; height: 18px; object-fit: contain;"> Upwork
             </a>
+            <button class="mobile-menu-btn" aria-label="Toggle Menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
         </div>
     </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay">
+        <ul class="mobile-nav-links">
+            <li><a href="short.html">Short Form</a></li>
+            <li><a href="long.html">Long Form</a></li>
+            <li><a href="index.html#testimonials">Testimonials</a></li>
+            <li><a href="https://www.upwork.com/freelancers/~013fd8ff4d81ea046d" target="_blank" class="mobile-upwork-btn"><img src="upwork-icon.png" alt="Upwork" style="height: 18px; filter: brightness(0);"> Upwork</a></li>
+        </ul>
+    </div>
 
     <main>
         <section class="page-hero">
